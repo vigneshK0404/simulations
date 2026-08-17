@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 template <typename A> class vec2 
 {
@@ -53,7 +54,15 @@ template <typename A> class vec2
 
 	A mag()
 	{
-	    return x*x + y*y;
+	    return std::sqrt(x*x + y*y);
+	}
+
+	void norm()
+	{
+	    A magnitude = mag();
+	    x = x/magnitude;
+	    y = y/magnitude;
+	    return;
 	}
 
 };

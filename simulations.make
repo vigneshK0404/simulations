@@ -118,9 +118,7 @@ endif
 GENERATED :=
 OBJECTS :=
 
-GENERATED += $(OBJDIR)/brute_force.o
 GENERATED += $(OBJDIR)/main.o
-OBJECTS += $(OBJDIR)/brute_force.o
 OBJECTS += $(OBJDIR)/main.o
 
 # Rules
@@ -185,9 +183,6 @@ endif
 # File Rules
 # #############################################
 
-$(OBJDIR)/brute_force.o: src/brute_force.cxx
-	@echo "$(notdir $<)"
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/main.o: src/main.cxx
 	@echo "$(notdir $<)"
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
