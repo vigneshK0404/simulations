@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <iostream>
 
 template <typename A> class vec2 
 {
@@ -62,6 +63,12 @@ template <typename A> class vec2
 	    A magnitude = mag();
 	    x = x/magnitude;
 	    y = y/magnitude;
+	    return;
+	}
+
+	void print()
+	{
+	    std::cout << x << "," << y << "\n";
 	    return;
 	}
 
