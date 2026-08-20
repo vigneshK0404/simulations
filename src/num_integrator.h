@@ -23,15 +23,15 @@ class num_integrator
 	double right_bound;
 	double left_bound;
 
-	num_integrator(double ub, double lob, double rb, double leb) : upper_bound(ub), lower_bound(lob), right_bound(rb), left_bound(leb){}
+	num_integrator(double ub, double lob, double leb, double rb) : upper_bound(ub), lower_bound(lob), right_bound(rb), left_bound(leb){}
 
 	void bounce(particle* p)
 	{
 	    
 	    double x = p->pos.X();
 	    double y = p->pos.Y();
-	    bool upper = (y <= upper_bound);
-	    bool lower = (y >= lower_bound);
+	    bool upper = (y >= upper_bound);
+	    bool lower = (y <= lower_bound);
 	    bool right = (x >= right_bound);
 	    bool left = (x <= left_bound);
 
@@ -53,20 +53,27 @@ class num_integrator
 	    p->vel -= norm_vector*dot_prod;
 	}
 	
-	void update(std::vector<particle*>& particle_list)
+	void update(std::vector<std::unique_ptr<particle>>& particle_list)
 	{
-	    for(particle* p : particle_list)
+	    for(std::unique_ptr<particle>& p : particle_list)
 	    {
 		
-		bounce(p);
+		bounce(p.get());
 			
 		p->vel += p->acc*dt;
 		p->pos += p->vel*dt;
-
-
-		//p->vel.print();
-		//p->pos.print();
 	    }
+	}
+
+	double calc_KE(std::vector<std::unique_ptr<particle>>& p_list)
+	{
+	    double KE = 0;
+	    for(const std::unique_ptr<particle>& p : p_list)
+	    {
+		KE += 0.5 * (p->vel.dot(p->vel));
+	    }
+
+	    return KE;
 	}
 
 };
