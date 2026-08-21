@@ -65,17 +65,7 @@ class num_integrator
 	    }
 	}
 
-	double calc_KE(std::vector<std::unique_ptr<particle>>& p_list)
-	{
-	    double KE = 0;
-	    for(const std::unique_ptr<particle>& p : p_list)
-	    {
-		KE += 0.5 * (p->vel.dot(p->vel));
-	    }
-
-	    return KE;
-	}
-
+	
 };
 
 

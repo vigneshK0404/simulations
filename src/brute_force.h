@@ -1,5 +1,19 @@
 #include "num_integrator.h"
 #include "vec2.h"
+#include <cmath>
+
+
+double calc_KE(std::vector<std::unique_ptr<particle>>& p_list)
+{
+    double KE = 0;
+    for(const std::unique_ptr<particle>& p : p_list)
+    {
+	KE += 0.5 * (p->vel.dot(p->vel));
+    }
+
+    return KE;
+}
+
 
 
 class brute_force
@@ -7,9 +21,19 @@ class brute_force
     public:
 	brute_force() = default;
 
-	void calculate_accel(std::vector<std::unique_ptr<particle>>& p_list)
+	double calculate_accel(std::vector<std::unique_ptr<particle>>& p_list)
 	{
 	    size_t p_size = p_list.size();
+	    vec2<double> tmp;
+
+	    double KE = calc_KE(p_list);
+
+	    double pot_E = 0;
+
+	    for(auto& p : p_list)
+	    {
+		p->acc = tmp;
+	    }
 
 	    for(size_t i = 0; i < p_size; ++i)
 	    {
@@ -17,14 +41,18 @@ class brute_force
 
 		for(size_t j = i+1; j < p_size; ++j)
 		{
-		    vec2<double> delta = p_list[j]->pos - pos_i; 
-		    vec2<double> force = delta / delta.mag();
+		    vec2<double> delta = p_list[j]->pos - pos_i;
+		    double r = delta.mag();
+		    pot_E += std::log(r);
+		    vec2<double> force = delta / (r*r);
 
-		    p_list[i]->acc += force;
-		    p_list[j]->acc -= force;
+		    p_list[i]->acc += force*1e3;
+		    p_list[j]->acc -= force*1e3;
 
 		}
 	    }
+
+	    return pot_E + KE;
 
 	}
 

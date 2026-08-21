@@ -29,13 +29,13 @@ int main ()
 
     std::uniform_real_distribution<> position_x(left_bound, right_bound);
     std::uniform_real_distribution<> position_y(lower_bound, upper_bound);
-    std::normal_distribution<double> velocity_x(upper_bound/5, std::sqrt(upper_bound));
-    std::normal_distribution<double> velocity_y(right_bound/6, std::sqrt(right_bound));
+    std::normal_distribution<double> velocity_x(upper_bound/50, std::sqrt(upper_bound));
+    std::normal_distribution<double> velocity_y(right_bound/60, std::sqrt(right_bound));
 
     std::vector<std::unique_ptr<particle>> p_list;
-    for(int i = 0; i < 10; ++i)
+    for(int i = 0; i < 1500; ++i)
     {
-	p_list.emplace_back(std::make_unique<particle>(position_x(gen), position_y(gen),0,0,0,0));
+	p_list.emplace_back(std::make_unique<particle>(position_x(gen), position_y(gen),velocity_x(gen),velocity_y(gen),0,0));
 
     }
     
@@ -50,14 +50,23 @@ int main ()
 
     // Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
     SearchAndSetResourceDir("resources");
-    int counter = 0;
+    int counter = 1;
+    double init_E = 0;
     // game loop
     while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
     {
-	bf.calculate_accel(p_list);
+	double energy = bf.calculate_accel(p_list);
+
+	if(counter == 1)
+	    init_E = energy;
+	if(counter%500 == 0)
+	{
+	    std::cout << std::abs(energy - init_E) / init_E << "\n";
+	    counter = 1;
+	}
 	n_I.update(p_list);
 
-	std::cout << n_I.calc_KE(p_list) << "\n";
+	//std::cout << n_I.calc_KE(p_list) << "\n";
 
 	BeginDrawing();	
 	ClearBackground(BLACK);
