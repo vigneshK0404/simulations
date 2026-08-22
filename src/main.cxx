@@ -33,7 +33,7 @@ int main ()
     std::normal_distribution<double> velocity_y(right_bound/60, std::sqrt(right_bound));
 
     std::vector<std::unique_ptr<particle>> p_list;
-    for(int i = 0; i < 1500; ++i)
+    for(int i = 0; i < 200; ++i)
     {
 	p_list.emplace_back(std::make_unique<particle>(position_x(gen), position_y(gen),velocity_x(gen),velocity_y(gen),0,0));
 
@@ -84,3 +84,5 @@ int main ()
     CloseWindow();
     return 0;
 }
+
+//brute_force : 1500 particles

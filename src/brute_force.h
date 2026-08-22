@@ -1,7 +1,7 @@
-#include "num_integrator.h"
-#include "vec2.h"
-#include <cmath>
+#pragma once
+#include "particle.h"
 
+const double sf = 1e3;
 
 double calc_KE(std::vector<std::unique_ptr<particle>>& p_list)
 {
@@ -43,11 +43,11 @@ class brute_force
 		{
 		    vec2<double> delta = p_list[j]->pos - pos_i;
 		    double r = delta.mag();
-		    pot_E += std::log(r);
+		    pot_E += std::log(r)*sf;
 		    vec2<double> force = delta / (r*r);
 
-		    p_list[i]->acc += force*1e3;
-		    p_list[j]->acc -= force*1e3;
+		    p_list[i]->acc += force*sf;
+		    p_list[j]->acc -= force*sf;
 
 		}
 	    }
