@@ -70,6 +70,6 @@ template <typename A> class vec2
 	{
 	    std::cout << x << "," << y << "\n";
 	    return;
-	}
+	}	
 
 };
